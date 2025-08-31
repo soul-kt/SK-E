@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://solukit.com/sitemap.xml
+
+# Optimize crawling
+Crawl-delay: 1
+
+# Block unnecessary files
+Disallow: /assets/
+Disallow: /*.css$
+Disallow: /*.js$
+

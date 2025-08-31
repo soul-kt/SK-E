@@ -1,0 +1,21 @@
+{
+    "name": "SoLuKIT Enterprises - Verification Services",
+    "short_name": "SoLuKIT",
+    "description": "Secure, reliable, and efficient verification services for businesses worldwide",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#F8F9FA",
+    "theme_color": "#157F7E",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "assets/logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": ["business", "productivity", "utilities"],
+    "lang": "en-US"
+}
+
