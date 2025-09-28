@@ -53,6 +53,8 @@ body {
     /* Improve rendering performance */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Contain layout for better performance */
+    contain: layout style;
 }
 
 .container {
@@ -69,10 +71,10 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: var(--spacing-sm);
 }
 
-h1 { font-size: 3rem; }
-h2 { font-size: 2.5rem; }
-h3 { font-size: 2rem; }
-h4 { font-size: 1.5rem; }
+h1 { font-size: 3rem; contain: layout style; }
+h2 { font-size: 2.5rem; contain: layout style; }
+h3 { font-size: 2rem; contain: layout style; }
+h4 { font-size: 1.5rem; contain: layout style; }
 
 p {
     margin-bottom: var(--spacing-sm);
@@ -94,6 +96,8 @@ p {
     /* Hardware acceleration */
     transform: translateZ(0);
     will-change: transform;
+    /* Contain layout for better performance */
+    contain: layout style;
 }
 
 .btn-primary {
@@ -220,6 +224,8 @@ p {
     color: var(--text-dark);
     /* Optimize text rendering */
     text-rendering: optimizeLegibility;
+    /* Contain layout for better performance */
+    contain: layout style;
 }
 
 .highlight {
@@ -345,6 +351,8 @@ section {
     /* Hardware acceleration */
     transform: translateZ(0);
     will-change: transform;
+    /* Contain layout for better performance */
+    contain: layout style;
 }
 
 .service-card:hover {
@@ -412,6 +420,8 @@ section {
     /* Hardware acceleration */
     transform: translateZ(0);
     will-change: transform;
+    /* Contain layout for better performance */
+    contain: layout style;
 }
 
 .benefit-card:hover {
@@ -476,6 +486,8 @@ section {
     /* Hardware acceleration */
     transform: translateZ(0);
     will-change: transform;
+    /* Contain layout for better performance */
+    contain: layout style;
 }
 
 .vision-card:hover {
@@ -522,6 +534,8 @@ section {
     /* Hardware acceleration */
     transform: translateZ(0);
     will-change: transform;
+    /* Contain layout for better performance */
+    contain: layout style;
 }
 
 .team-member:hover {
@@ -892,15 +906,10 @@ img {
     image-rendering: -webkit-optimize-contrast;
 }
 
-/* Contain layout for better performance */
-* {
-    /* Contain layout changes for better performance */
-    contain: layout style;
-}
-
 /* Optimize animations */
 * {
     /* Optimize animations for better performance */
     backface-visibility: hidden;
     perspective: 1000px;
+    will-change: transform;
 }

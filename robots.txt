@@ -4,15 +4,36 @@ Allow: /
 Sitemap: https://solukitenterprises.com/sitemap.xml
 
 # Optimize crawling
-Crawl-delay: 1
+Crawl-delay: 0
 
-# Allow important assets for SEO
-Allow: /assets/logo.png
-Allow: /assets/identity-protection.jpg
-Allow: /assets/business-team.jpg
-Allow: /assets/customer-support.jpg
-Allow: /assets/it-support-office.jpg
+# Host directive
+Host: https://solukitenterprises.com
+
+# Allow all assets for better indexing
+Allow: /assets/
 
 # Block unnecessary files
 Disallow: /*.css$
 Disallow: /*.js$
+
+# Crawl budget optimization
+User-agent: Googlebot
+Allow: /$
+Allow: /#about$
+Allow: /#services$
+Allow: /#benefits$
+Allow: /#vision$
+Allow: /#team$
+Allow: /#contact$
+Allow: /privacy.html$
+Allow: /terms.html$
+Allow: /faq.html$
+Allow: /assets/
+
+# Image crawling
+User-agent: Googlebot-Image
+Allow: /assets/
+
+# Mobile crawling
+User-agent: Googlebot-Mobile
+Allow: /

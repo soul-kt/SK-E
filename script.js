@@ -1,4 +1,4 @@
-// Performance optimized mobile navigation toggle
+// Performance optimized mobile navigation toggle with passive event listeners
 document.addEventListener('DOMContentLoaded', function() {
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.getElementById('nav-menu');
@@ -9,14 +9,14 @@ document.addEventListener('DOMContentLoaded', function() {
         navToggle.addEventListener('click', function() {
             navMenu.classList.toggle('active');
             navToggle.classList.toggle('active');
-        });
+        }, { passive: true });
 
         // Close mobile menu when clicking on a link
         navLinks.forEach(link => {
             link.addEventListener('click', function() {
                 navMenu.classList.remove('active');
                 navToggle.classList.remove('active');
-            });
+            }, { passive: true });
         });
 
         // Close mobile menu when clicking outside with debouncing
@@ -30,11 +30,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     navToggle.classList.remove('active');
                 }
             }, 10);
-        });
+        }, { passive: true });
     }
 });
 
-// Smooth Scrolling for Navigation Links with performance optimization
+// Smooth Scrolling for Navigation Links with performance optimization and passive listeners
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -46,10 +46,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 behavior: 'smooth'
             });
         }
-    });
+    }, { passive: false });
 });
 
-// Active Navigation Link Highlighting with throttling
+// Active Navigation Link Highlighting with throttling and passive listeners
 let ticking = false;
 window.addEventListener('scroll', function() {
     if (!ticking) {
@@ -78,7 +78,7 @@ window.addEventListener('scroll', function() {
         
         ticking = true;
     }
-});
+}, { passive: true });
 
 // Contact Form Handling with validation
 document.getElementById('contact-form').addEventListener('submit', function(e) {
@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Navbar Background on Scroll with throttling
+// Navbar Background on Scroll with throttling and passive listeners
 let navTicking = false;
 window.addEventListener('scroll', function() {
     if (!navTicking) {
@@ -222,7 +222,7 @@ window.addEventListener('scroll', function() {
         
         navTicking = true;
     }
-});
+}, { passive: true });
 
 // Lazy Loading for Images with Intersection Observer
 document.addEventListener('DOMContentLoaded', function() {
