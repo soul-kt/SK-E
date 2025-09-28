@@ -9,6 +9,9 @@ Crawl-delay: 1
 # Allow important assets for SEO
 Allow: /assets/logo.png
 Allow: /assets/identity-protection.jpg
+Allow: /assets/business-team.jpg
+Allow: /assets/customer-support.jpg
+Allow: /assets/it-support-office.jpg
 
 # Block unnecessary files
 Disallow: /*.css$
