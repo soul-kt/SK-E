@@ -1,34 +1,40 @@
-// Mobile Navigation Toggle
+// Performance optimized mobile navigation toggle
 document.addEventListener('DOMContentLoaded', function() {
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.getElementById('nav-menu');
     const navLinks = document.querySelectorAll('.nav-link');
 
-    // Toggle mobile menu
-    navToggle.addEventListener('click', function() {
-        navMenu.classList.toggle('active');
-        navToggle.classList.toggle('active');
-    });
-
-    // Close mobile menu when clicking on a link
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            navMenu.classList.remove('active');
-            navToggle.classList.remove('active');
+    // Toggle mobile menu with performance optimization
+    if (navToggle && navMenu) {
+        navToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
         });
-    });
 
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', function(event) {
-        const isClickInsideNav = navMenu.contains(event.target) || navToggle.contains(event.target);
-        if (!isClickInsideNav && navMenu.classList.contains('active')) {
-            navMenu.classList.remove('active');
-            navToggle.classList.remove('active');
-        }
-    });
+        // Close mobile menu when clicking on a link
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+            });
+        });
+
+        // Close mobile menu when clicking outside with debouncing
+        let clickOutsideTimeout;
+        document.addEventListener('click', function(event) {
+            clearTimeout(clickOutsideTimeout);
+            clickOutsideTimeout = setTimeout(() => {
+                const isClickInsideNav = navMenu.contains(event.target) || navToggle.contains(event.target);
+                if (!isClickInsideNav && navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    navToggle.classList.remove('active');
+                }
+            }, 10);
+        });
+    }
 });
 
-// Smooth Scrolling for Navigation Links
+// Smooth Scrolling for Navigation Links with performance optimization
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -43,29 +49,38 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Active Navigation Link Highlighting
+// Active Navigation Link Highlighting with throttling
+let ticking = false;
 window.addEventListener('scroll', function() {
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    let current = '';
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100;
-        const sectionHeight = section.clientHeight;
-        if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
-            current = section.getAttribute('id');
-        }
-    });
+    if (!ticking) {
+        requestAnimationFrame(function() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
 
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === '#' + current) {
-            link.classList.add('active');
-        }
-    });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+            
+            ticking = false;
+        });
+        
+        ticking = true;
+    }
 });
 
-// Contact Form Handling
+// Contact Form Handling with validation
 document.getElementById('contact-form').addEventListener('submit', function(e) {
     e.preventDefault();
     
@@ -98,18 +113,22 @@ function isValidEmail(email) {
     return emailRegex.test(email);
 }
 
-// Notification system
+// Notification system with performance optimizations
 function showNotification(message, type = 'info') {
     // Remove existing notifications
     const existingNotifications = document.querySelectorAll('.notification');
-    existingNotifications.forEach(notification => notification.remove());
+    existingNotifications.forEach(notification => {
+        notification.style.transition = 'transform 0.3s ease';
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => notification.remove(), 300);
+    });
     
     // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
     
-    // Add styles
+    // Add styles with optimized CSS
     notification.style.cssText = `
         position: fixed;
         top: 20px;
@@ -123,6 +142,8 @@ function showNotification(message, type = 'info') {
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         transform: translateX(100%);
         transition: transform 0.3s ease;
+        backface-visibility: hidden;
+        will-change: transform;
     `;
     
     // Set background color based on type
@@ -143,10 +164,10 @@ function showNotification(message, type = 'info') {
     // Add to DOM
     document.body.appendChild(notification);
     
-    // Animate in
-    setTimeout(() => {
+    // Animate in with requestAnimationFrame for better performance
+    requestAnimationFrame(() => {
         notification.style.transform = 'translateX(0)';
-    }, 100);
+    });
     
     // Remove after 5 seconds
     setTimeout(() => {
@@ -157,7 +178,7 @@ function showNotification(message, type = 'info') {
     }, 5000);
 }
 
-// Intersection Observer for Animations
+// Intersection Observer for Animations with performance optimizations
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -167,6 +188,8 @@ const observer = new IntersectionObserver(function(entries) {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('fade-in-up');
+            // Unobserve to prevent re-triggering
+            observer.unobserve(entry.target);
         }
     });
 }, observerOptions);
@@ -179,42 +202,74 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Navbar Background on Scroll
+// Navbar Background on Scroll with throttling
+let navTicking = false;
 window.addEventListener('scroll', function() {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 100) {
-        navbar.style.backgroundColor = 'rgba(248, 249, 250, 0.95)';
-        navbar.style.backdropFilter = 'blur(10px)';
-    } else {
-        navbar.style.backgroundColor = '#FFFFFF';
-        navbar.style.backdropFilter = 'none';
+    if (!navTicking) {
+        requestAnimationFrame(function() {
+            const navbar = document.querySelector('.navbar');
+            if (navbar) {
+                if (window.scrollY > 100) {
+                    navbar.style.backgroundColor = 'rgba(248, 249, 250, 0.95)';
+                    navbar.style.backdropFilter = 'blur(10px)';
+                } else {
+                    navbar.style.backgroundColor = '#FFFFFF';
+                    navbar.style.backdropFilter = 'none';
+                }
+            }
+            navTicking = false;
+        });
+        
+        navTicking = true;
     }
 });
 
-// Lazy Loading for Images
+// Lazy Loading for Images with Intersection Observer
 document.addEventListener('DOMContentLoaded', function() {
-    const images = document.querySelectorAll('img[data-src]');
+    const images = document.querySelectorAll('img[loading="lazy"]');
     
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove('lazy');
-                imageObserver.unobserve(img);
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    // Only process if it has a data-src attribute
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                    img.classList.remove('lazy');
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+        
+        images.forEach(img => {
+            // Only observe images that need lazy loading
+            if (img.dataset.src) {
+                imageObserver.observe(img);
             }
         });
-    });
-    
-    images.forEach(img => imageObserver.observe(img));
+    } else {
+        // Fallback for browsers that don't support Intersection Observer
+        images.forEach(img => {
+            if (img.dataset.src) {
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+            }
+        });
+    }
 });
 
-// Back to Top Button
+// Back to Top Button with performance optimizations
 document.addEventListener('DOMContentLoaded', function() {
     // Create back to top button
     const backToTopButton = document.createElement('button');
     backToTopButton.innerHTML = '↑';
     backToTopButton.className = 'back-to-top';
+    backToTopButton.setAttribute('aria-label', 'Back to top');
+    
+    // Add optimized styles
     backToTopButton.style.cssText = `
         position: fixed;
         bottom: 30px;
@@ -232,18 +287,29 @@ document.addEventListener('DOMContentLoaded', function() {
         transition: all 0.3s ease;
         z-index: 1000;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        will-change: transform, opacity, visibility;
     `;
     
     document.body.appendChild(backToTopButton);
     
-    // Show/hide button based on scroll position
+    // Show/hide button based on scroll position with throttling
+    let backToTopTicking = false;
     window.addEventListener('scroll', function() {
-        if (window.pageYOffset > 300) {
-            backToTopButton.style.opacity = '1';
-            backToTopButton.style.visibility = 'visible';
-        } else {
-            backToTopButton.style.opacity = '0';
-            backToTopButton.style.visibility = 'hidden';
+        if (!backToTopTicking) {
+            requestAnimationFrame(function() {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.style.opacity = '1';
+                    backToTopButton.style.visibility = 'visible';
+                } else {
+                    backToTopButton.style.opacity = '0';
+                    backToTopButton.style.visibility = 'hidden';
+                }
+                backToTopTicking = false;
+            });
+            
+            backToTopTicking = true;
         }
     });
     
@@ -255,44 +321,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Hover effect
+    // Hover effect with optimized transitions
     backToTopButton.addEventListener('mouseenter', function() {
         this.style.backgroundColor = 'var(--dark-teal)';
-        this.style.transform = 'translateY(-2px)';
+        this.style.transform = 'translateY(-2px) translateZ(0)';
     });
     
     backToTopButton.addEventListener('mouseleave', function() {
         this.style.backgroundColor = 'var(--primary-teal)';
-        this.style.transform = 'translateY(0)';
+        this.style.transform = 'translateY(0) translateZ(0)';
     });
 });
 
-// Performance optimization: Debounce scroll events
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Apply debounce to scroll events
-const debouncedScrollHandler = debounce(function() {
-    // Handle scroll events here if needed
-}, 10);
-
-window.addEventListener('scroll', debouncedScrollHandler);
-
-// Preload critical images
+// Preload critical images for better performance
 document.addEventListener('DOMContentLoaded', function() {
     const criticalImages = [
         'assets/logo.png',
-        'assets/identity-protection.jpg',
-        'assets/business-team.jpg'
+        'assets/identity-protection.jpg'
     ];
     
     criticalImages.forEach(src => {
@@ -323,3 +368,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Performance optimization: Debounce scroll events
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Apply debounce to scroll events
+const debouncedScrollHandler = debounce(function() {
+    // Handle scroll events here if needed
+}, 10);
+
+window.addEventListener('scroll', debouncedScrollHandler);
