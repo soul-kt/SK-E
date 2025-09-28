@@ -1,0 +1,17 @@
+{
+  "build": {
+    "command": "",
+    "dir": "./",
+    "output": "./"
+  },
+  "routes": [
+    {
+      "pattern": "/*",
+      "zone_id": null,
+      "zone_name": "solukitenterprises.com"
+    }
+  ],
+  "env": {
+    "BUILD_PATH": "./"
+  }
+}
